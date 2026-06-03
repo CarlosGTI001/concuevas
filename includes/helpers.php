@@ -10,18 +10,24 @@ function app_url(string $path = ''): string
 {
     global $config;
     $base = rtrim((string) ($config['app']['base_url'] ?? ''), '/');
-    $path = ltrim($path, '/');
+    
+    // Split path and query string to handle .php removal correctly
+    $parts = explode('?', $path, 2);
+    $pathOnly = $parts[0];
+    $query = isset($parts[1]) ? '?' . $parts[1] : '';
 
     // Remove .php extension for cleaner URLs
-    if (preg_match('/\.php$/', $path)) {
-        if ($path === 'index.php') {
-            $path = '';
-        } elseif (substr($path, -10) === '/index.php') {
-            $path = substr($path, 0, -10);
+    if (preg_match('/\.php$/', $pathOnly)) {
+        if ($pathOnly === 'index.php') {
+            $pathOnly = '';
+        } elseif (substr($pathOnly, -10) === '/index.php') {
+            $pathOnly = substr($pathOnly, 0, -10);
         } else {
-            $path = substr($path, 0, -4);
+            $pathOnly = substr($pathOnly, 0, -4);
         }
     }
+
+    $path = ltrim($pathOnly, '/') . $query;
 
     // Ensure we don't have double slashes if path is empty
     $finalPath = '/' . $path;

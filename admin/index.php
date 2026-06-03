@@ -127,8 +127,11 @@ require __DIR__ . '/partials/header.php';
         <a href="<?= e(app_url('admin/services')) ?>" class="list-group-item list-group-item-action bg-transparent border-light d-flex align-items-center">
           <span class="fas fa-concierge-bell mr-3 text-info"></span> Gestionar Servicios
         </a>
-        <a href="<?= e(app_url('admin/settings')) ?>" class="list-group-item list-group-item-action bg-transparent border-0 d-flex align-items-center">
+        <a href="<?= e(app_url('admin/settings')) ?>" class="list-group-item list-group-item-action bg-transparent border-light d-flex align-items-center">
           <span class="fas fa-cog mr-3 text-warning"></span> Configuración General
+        </a>
+        <a href="<?= e(app_url('admin/users')) ?>" class="list-group-item list-group-item-action bg-transparent border-0 d-flex align-items-center">
+          <span class="fas fa-users-cog mr-3 text-primary"></span> Gestionar Usuarios
         </a>
       </div>
     </div>

@@ -21,6 +21,7 @@ $navItems = [
     ['file' => 'services.php', 'label' => 'Servicios', 'icon' => 'fas fa-tools'],
     ['file' => 'projects.php', 'label' => 'Proyectos', 'icon' => 'fas fa-building'],
     ['file' => 'quotes.php', 'label' => 'Cotizaciones', 'icon' => 'fas fa-file-invoice-dollar'],
+    ['file' => 'users.php', 'label' => 'Usuarios', 'icon' => 'fas fa-users-cog'],
     ['file' => 'settings.php', 'label' => 'Ajustes', 'icon' => 'fas fa-cog'],
 ];
 ?>
