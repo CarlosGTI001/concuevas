@@ -52,6 +52,12 @@ function slugify(string $text): string
     return $text !== '' ? $text : 'proyecto-' . time();
 }
 
+function is_video_extension(string $extension): bool
+{
+    $videoExtensions = ['mp4', 'webm', 'ogg', 'mov'];
+    return in_array(strtolower($extension), $videoExtensions, true);
+}
+
 function handle_upload(array $file, string $subfolder = '', ?string $customName = null): ?string
 {
     if (($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
@@ -59,8 +65,11 @@ function handle_upload(array $file, string $subfolder = '', ?string $customName 
     }
 
     // Stricter MIME type and extension validation
-    $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-    $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+    $allowedMimeTypes = [
+        'image/jpeg', 'image/png', 'image/gif', 'image/webp',
+        'video/mp4', 'video/webm', 'video/ogg', 'video/quicktime'
+    ];
+    $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'webm', 'ogg', 'mov'];
     
     $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
     $finfo = new finfo(FILEINFO_MIME_TYPE);
@@ -70,10 +79,12 @@ function handle_upload(array $file, string $subfolder = '', ?string $customName 
         return null;
     }
 
-    // Validate if it's actually an image (check file signature/magic numbers)
-    $imageSize = @getimagesize($file['tmp_name']);
-    if ($imageSize === false) {
-        return null;
+    // Validate if it's actually an image or a valid video
+    if (!is_video_extension($extension)) {
+        $imageSize = @getimagesize($file['tmp_name']);
+        if ($imageSize === false) {
+            return null;
+        }
     }
 
     $uploadDir = __DIR__ . '/../uploads/';
@@ -325,7 +336,7 @@ function send_mail(string $to, string $subject, string $message, array $data = [
     $bgSoft = '#E6E6E6';
 
     if ($fromEmail === '') {
-        error_log('No se encontró "from_email" para enviar correo.');
+        error_log('[Mail] No se encontró "from_email" en config.php');
         return false;
     }
 
@@ -416,8 +427,16 @@ function send_mail(string $to, string $subject, string $message, array $data = [
             $headers
         );
         $rawMessage = implode("\r\n", $smtpHeaders) . "\r\n\r\n" . $htmlMessage;
-        return smtp_send_message($smtpConfig, $fromEmail, $to, $rawMessage);
+        $result = smtp_send_message($smtpConfig, $fromEmail, $to, $rawMessage);
+        if (!$result) {
+            error_log("[Mail] SMTP falló al enviar correo a: $to");
+        }
+        return $result;
     }
 
-    return mail($to, $subject, $htmlMessage, implode("\r\n", $headers));
+    $result = mail($to, $subject, $htmlMessage, implode("\r\n", $headers));
+    if (!$result) {
+        error_log("[Mail] Función mail() de PHP falló al enviar correo a: $to");
+    }
+    return $result;
 }

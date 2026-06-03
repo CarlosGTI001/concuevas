@@ -21,7 +21,7 @@ if (!$project) {
     exit;
 }
 
-$imagesStmt = db()->prepare('SELECT image_url FROM project_images WHERE project_id = :id ORDER BY sort_order ASC, id ASC');
+$imagesStmt = db()->prepare('SELECT image_url, media_type FROM project_images WHERE project_id = :id ORDER BY sort_order ASC, id ASC');
 $imagesStmt->execute(['id' => $project['id']]);
 $gallery = $imagesStmt->fetchAll();
 
@@ -69,8 +69,15 @@ require __DIR__ . '/partials/header.php';
     <div class="row">
       <?php foreach ($gallery as $index => $img): ?>
         <div class="col-12 col-md-6 col-lg-4 mb-5">
-          <div class="card bg-primary border-light shadow-soft p-2 js-gallery-item" data-index="<?= $index ?>" style="cursor: pointer;">
-            <img src="<?= e($img['image_url']) ?>" class="card-img-top rounded img-normalized img-ratio-3-2" alt="Imagen de <?= e($project['title']) ?>">
+          <div class="card bg-primary border-light shadow-soft p-2 js-gallery-item" data-index="<?= $index ?>" style="cursor: pointer; position: relative;">
+            <?php if (($img['media_type'] ?? 'image') === 'video'): ?>
+                <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); color:rgba(255,255,255,0.8); font-size:3rem; pointer-events:none; z-index:2;">
+                    <i class="fas fa-play-circle"></i>
+                </div>
+                <video src="<?= e($img['image_url']) ?>" class="card-img-top rounded img-normalized img-ratio-3-2" style="object-fit: cover;" muted></video>
+            <?php else: ?>
+                <img src="<?= e($img['image_url']) ?>" class="card-img-top rounded img-normalized img-ratio-3-2" alt="Imagen de <?= e($project['title']) ?>">
+            <?php endif; ?>
           </div>
         </div>
       <?php endforeach; ?>
@@ -91,7 +98,11 @@ require __DIR__ . '/partials/header.php';
                         <?php foreach ($gallery as $index => $img): ?>
                             <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
                                 <div class="lightbox-image-container">
-                                    <img src="<?= e($img['image_url']) ?>" class="d-block shadow-lg rounded" alt="Full Image">
+                                    <?php if (($img['media_type'] ?? 'image') === 'video'): ?>
+                                        <video src="<?= e($img['image_url']) ?>" class="d-block shadow-lg rounded" controls style="max-height: 80vh; max-width: 100%;"></video>
+                                    <?php else: ?>
+                                        <img src="<?= e($img['image_url']) ?>" class="d-block shadow-lg rounded" alt="Full Image">
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         <?php endforeach; ?>
@@ -113,11 +124,16 @@ require __DIR__ . '/partials/header.php';
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const galleryItems = document.querySelectorAll('.js-gallery-item');
+    const lightboxCarousel = document.getElementById('CarouselLightbox');
+    
     galleryItems.forEach(item => {
         item.addEventListener('click', function() {
             const index = this.getAttribute('data-index');
             $('#CarouselLightbox').carousel(parseInt(index));
             $('#modal-lightbox').modal('show');
+            
+            // Auto play if it's a video in the newly selected slide
+            playVideoIfPresent(document.querySelector('.carousel-item.active'));
         });
     });
 
@@ -127,6 +143,38 @@ document.addEventListener('DOMContentLoaded', function() {
             $('.modal-backdrop').addClass('lightbox-backdrop-custom');
         }, 0);
     });
+
+    // Handle video playback logic on slide change
+    $('#CarouselLightbox').on('slide.bs.carousel', function (e) {
+        // Pause current video if any
+        const currentVideo = e.from ? document.querySelectorAll('.carousel-item')[e.from].querySelector('video') : null;
+        if (currentVideo) currentVideo.pause();
+    });
+    
+    $('#CarouselLightbox').on('slid.bs.carousel', function (e) {
+        // Try to play new video if any
+        playVideoIfPresent(e.relatedTarget);
+    });
+
+    // Pause all videos when modal closes
+    $('#modal-lightbox').on('hide.bs.modal', function() {
+        const videos = lightboxCarousel.querySelectorAll('video');
+        videos.forEach(v => v.pause());
+    });
+
+    function playVideoIfPresent(slideElement) {
+        if (!slideElement) return;
+        const video = slideElement.querySelector('video');
+        if (video) {
+            // Attempt to play, catch potential auto-play restrictions
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("Auto-play prevented", error);
+                });
+            }
+        }
+    }
 });
 </script>
 <?php endif; ?>

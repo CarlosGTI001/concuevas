@@ -126,10 +126,17 @@ require __DIR__ . '/partials/header.php';
     <div id="gallery-manager" class="gallery-manager-grid">
         <?php foreach ($images as $img): ?>
             <div class="gallery-item-card" data-id="<?= $img['id'] ?>">
-                <img src="<?= e($img['image_url']) ?>" alt="Service Image">
+                <?php if (($img['media_type'] ?? 'image') === 'video'): ?>
+                    <video src="<?= e($img['image_url']) ?>" style="width:100%; height:100%; object-fit:cover;" muted></video>
+                    <div style="position:absolute; top:5px; left:5px; background:rgba(0,0,0,0.6); color:#fff; padding:2px 6px; border-radius:4px; font-size:12px;">
+                        <i class="fas fa-video"></i>
+                    </div>
+                <?php else: ?>
+                    <img src="<?= e($img['image_url']) ?>" alt="Gallery Image">
+                <?php endif; ?>
                 <div class="sort-handle"><span class="fas fa-arrows-alt"></span></div>
                 <div class="item-actions">
-                    <form method="post" onsubmit="return confirm('¿Eliminar esta foto de la galería?');">
+                    <form method="post" onsubmit="return confirm('¿Eliminar esta foto?');">
                         <?= csrf_input() ?>
                         <input type="hidden" name="action" value="delete_image">
                         <input type="hidden" name="id" value="<?= (int) $img['id'] ?>">
@@ -139,10 +146,10 @@ require __DIR__ . '/partials/header.php';
             </div>
         <?php endforeach; ?>
     </div>
-</div>
+    </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
     const itemId = <?= $serviceId ?>;
     const type = 'service';
     const handlerUrl = '<?= e(app_url('admin/gallery_handler')) ?>';
@@ -153,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
         url: handlerUrl,
         paramName: "file",
         params: { action: 'upload', item_id: itemId, type: type },
-        acceptedFiles: 'image/*',
+        acceptedFiles: 'image/*,video/mp4,video/webm,video/ogg',
         success: function(file, response) {
             location.reload();
         }

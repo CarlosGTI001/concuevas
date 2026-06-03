@@ -134,6 +134,7 @@ function run_schema_migrations(PDO $pdo): void
     ensure_goals_table_migration($pdo);
     ensure_service_images_table_migration($pdo);
     ensure_project_images_migration($pdo);
+    ensure_media_type_migration($pdo);
     ensure_page_sections_migration($pdo);
     
     // Ensure email in quote_requests is nullable
@@ -294,11 +295,27 @@ function ensure_sliders_table_migration(PDO $pdo): void
 
     foreach ($columns as $name => $sql) {
         $stmt = $pdo->prepare(
-            "SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = DATABASE() AND table_name = 'sliders' AND column_name = :col"
+            "SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = DATABASE() AND table_name = :col"
         );
         $stmt->execute(['col' => $name]);
         if ((int) $stmt->fetchColumn() === 0) {
             $pdo->exec($sql);
         }
     }
-}
+    }
+
+    function ensure_media_type_migration(PDO $pdo): void
+    {
+    $tables = ['project_images', 'service_images'];
+    foreach ($tables as $table) {
+        $columnStmt = $pdo->prepare(
+            "SELECT COUNT(*) FROM information_schema.columns 
+             WHERE table_schema = DATABASE() AND table_name = :table AND column_name = 'media_type'"
+        );
+        $columnStmt->execute(['table' => $table]);
+        if ((int)$columnStmt->fetchColumn() === 0) {
+            $pdo->exec("ALTER TABLE $table ADD COLUMN media_type ENUM('image', 'video') NOT NULL DEFAULT 'image' AFTER image_url");
+        }
+    }
+    }
+

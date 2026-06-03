@@ -24,9 +24,11 @@ if ($action === 'upload') {
         if ($url) {
             $table = ($type === 'project' ? 'project_images' : 'service_images');
             $fk = ($type === 'project' ? 'project_id' : 'service_id');
+            $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+            $mediaType = is_video_extension($extension) ? 'video' : 'image';
             
-            $stmt = db()->prepare("INSERT INTO $table ($fk, session_id, image_url, sort_order) VALUES (?, ?, ?, 999)");
-            $stmt->execute([$itemId, $sessionId, $url]);
+            $stmt = db()->prepare("INSERT INTO $table ($fk, session_id, image_url, sort_order, media_type) VALUES (?, ?, ?, 999, ?)");
+            $stmt->execute([$itemId, $sessionId, $url, $mediaType]);
             
             header('Content-Type: application/json');
             echo json_encode(['status' => 'success', 'url' => $url, 'id' => db()->lastInsertId()]);
