@@ -295,17 +295,17 @@ function ensure_sliders_table_migration(PDO $pdo): void
 
     foreach ($columns as $name => $sql) {
         $stmt = $pdo->prepare(
-            "SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = DATABASE() AND table_name = :col"
+            "SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = DATABASE() AND table_name = 'sliders' AND column_name = :col"
         );
         $stmt->execute(['col' => $name]);
         if ((int) $stmt->fetchColumn() === 0) {
             $pdo->exec($sql);
         }
     }
-    }
+}
 
-    function ensure_media_type_migration(PDO $pdo): void
-    {
+function ensure_media_type_migration(PDO $pdo): void
+{
     $tables = ['project_images', 'service_images'];
     foreach ($tables as $table) {
         $columnStmt = $pdo->prepare(
@@ -317,5 +317,5 @@ function ensure_sliders_table_migration(PDO $pdo): void
             $pdo->exec("ALTER TABLE $table ADD COLUMN media_type ENUM('image', 'video') NOT NULL DEFAULT 'image' AFTER image_url");
         }
     }
-    }
+}
 
