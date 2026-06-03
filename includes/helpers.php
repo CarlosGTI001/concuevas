@@ -430,6 +430,8 @@ function send_mail(string $to, string $subject, string $message, array $data = [
         $result = smtp_send_message($smtpConfig, $fromEmail, $to, $rawMessage);
         if (!$result) {
             error_log("[Mail] SMTP falló al enviar correo a: $to");
+        } else {
+            error_log("[Mail] SMTP envió correo con éxito a: $to (Asunto: $subject)");
         }
         return $result;
     }
@@ -437,6 +439,8 @@ function send_mail(string $to, string $subject, string $message, array $data = [
     $result = mail($to, $subject, $htmlMessage, implode("\r\n", $headers));
     if (!$result) {
         error_log("[Mail] Función mail() de PHP falló al enviar correo a: $to");
+    } else {
+        error_log("[Mail] Función mail() de PHP envió correo con éxito a: $to (Asunto: $subject)");
     }
     return $result;
 }

@@ -147,4 +147,22 @@ function toggleOtherField(value) {
 }
 </script>
 
+<?php if (isset($triggerAsyncEmailId)): ?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const formData = new URLSearchParams();
+    formData.append('action', 'quote_confirmation');
+    formData.append('id', '<?= $triggerAsyncEmailId ?>');
+    formData.append('csrf_token', '<?= generate_csrf_token() ?>');
+    
+    // Fire and forget request to send the email in the background
+    fetch('<?= e(app_url('async_email.php')) ?>', {
+        method: 'POST',
+        body: formData,
+        keepalive: true
+    }).catch(err => console.error('Background email trigger failed:', err));
+});
+</script>
+<?php endif; ?>
+
 <?php require __DIR__ . '/partials/footer.php'; ?>

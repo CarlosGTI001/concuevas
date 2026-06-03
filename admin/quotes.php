@@ -13,12 +13,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $subject = trim((string) ($_POST['subject'] ?? ''));
         $body = trim((string) ($_POST['body'] ?? ''));
         $name = trim((string) ($_POST['client_name'] ?? ''));
+        $isAjax = !empty($_POST['is_ajax']);
 
         if ($to !== '' && $body !== '') {
-            if (send_mail($to, $subject, $body, ['name' => $name])) {
-                // Success
+            $success = send_mail($to, $subject, $body, ['name' => $name]);
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                echo json_encode(['status' => $success ? 'success' : 'error']);
+                exit;
             }
+        } elseif ($isAjax) {
+            header('Content-Type: application/json');
+            echo json_encode(['status' => 'error', 'message' => 'Faltan datos']);
+            exit;
         }
+        
         redirect(app_url('admin/quotes'));
     }
 }
@@ -156,20 +165,25 @@ require __DIR__ . '/partials/header.php';
                 <!-- Reply Section -->
                 <div id="reply-section" class="d-none mt-5 pt-4 border-top border-light">
                     <h3 class="h6 mb-4"><span class="fas fa-reply mr-2"></span> Responder por Correo</h3>
-                    <form method="post">
+                    <form id="form-reply-email">
+                        <?= csrf_input() ?>
                         <input type="hidden" name="action" value="reply">
                         <input type="hidden" name="email" id="reply-email">
                         <input type="hidden" name="client_name" id="reply-name">
+                        <input type="hidden" name="is_ajax" value="1">
                         <div class="form-group">
                             <label for="reply-subject">Asunto</label>
                             <input type="text" name="subject" id="reply-subject" class="form-control" value="Respuesta a su solicitud de cotización - Construcciones Cuevas">
                         </div>
                         <div class="form-group">
                             <label for="reply-body">Mensaje de respuesta</label>
-                            <textarea name="body" id="reply-body" class="form-control" rows="5" placeholder="Escribe tu respuesta aquí..."></textarea>
+                            <textarea name="body" id="reply-body" class="form-control" rows="5" placeholder="Escribe tu respuesta aquí..." required></textarea>
                         </div>
                         <div class="text-right">
-                            <button type="submit" class="btn btn-primary btn-sm">Enviar Respuesta</button>
+                            <button type="submit" id="btn-send-reply" class="btn btn-primary btn-sm">
+                                <span class="btn-text">Enviar Respuesta</span>
+                                <span class="spinner-border spinner-border-sm d-none ml-2" role="status" aria-hidden="true"></span>
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -209,6 +223,59 @@ document.addEventListener('DOMContentLoaded', function() {
 
         $('#modal-view-quote').modal('show');
     });
+
+    // AJAX form submission for email reply
+    const replyForm = document.getElementById('form-reply-email');
+    if (replyForm) {
+        replyForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-send-reply');
+            const btnText = btn.querySelector('.btn-text');
+            const spinner = btn.querySelector('.spinner-border');
+            
+            // UI Loading state
+            btn.disabled = true;
+            btnText.textContent = 'Enviando...';
+            spinner.classList.remove('d-none');
+
+            const formData = new FormData(replyForm);
+
+            fetch('<?= e(app_url('admin/quotes.php')) ?>', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Success state
+                    btnText.textContent = '¡Enviado!';
+                    btn.classList.replace('btn-primary', 'btn-success');
+                    spinner.classList.add('d-none');
+                    
+                    setTimeout(() => {
+                        $('#modal-view-quote').modal('hide');
+                        // Reset button
+                        btn.disabled = false;
+                        btnText.textContent = 'Enviar Respuesta';
+                        btn.classList.replace('btn-success', 'btn-primary');
+                        replyForm.reset();
+                    }, 1500);
+                } else {
+                    throw new Error(data.message || 'Error al enviar');
+                }
+            })
+            .catch(error => {
+                alert('No se pudo enviar el correo: ' + error.message);
+                // Reset button on error
+                btn.disabled = false;
+                btnText.textContent = 'Enviar Respuesta';
+                spinner.classList.add('d-none');
+            });
+        });
+    }
 });
 </script>
 <?php require __DIR__ . '/partials/footer.php'; ?>
