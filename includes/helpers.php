@@ -117,11 +117,196 @@ function ensure_uploads_protection(string $dir): void
     }
 }
 
+function format_email_address(string $email, string $name = ''): string
+{
+    $email = trim($email);
+    $name = trim($name);
+    if ($name === '') {
+        return $email;
+    }
+    $safeName = str_replace('"', '\"', $name);
+    $encodedName = function_exists('mb_encode_mimeheader')
+        ? mb_encode_mimeheader($safeName, 'UTF-8')
+        : $safeName;
+    return sprintf('"%s" <%s>', $encodedName, $email);
+}
+
+function encode_mail_header(string $value): string
+{
+    return function_exists('mb_encode_mimeheader')
+        ? mb_encode_mimeheader($value, 'UTF-8')
+        : $value;
+}
+
+function smtp_send_message(array $smtp, string $fromEmail, string $to, string $rawMessage): bool
+{
+    $host = trim((string) ($smtp['host'] ?? ''));
+    $port = (int) ($smtp['port'] ?? 25);
+    $username = (string) ($smtp['username'] ?? '');
+    $password = (string) ($smtp['password'] ?? '');
+    $encryption = strtolower((string) ($smtp['encryption'] ?? ''));
+    $timeout = (int) ($smtp['timeout'] ?? 10);
+
+    if ($host === '') {
+        error_log('SMTP host no configurado.');
+        return false;
+    }
+    if ($fromEmail === '') {
+        error_log('SMTP requiere un correo "from_email" válido.');
+        return false;
+    }
+
+    $remoteHost = $encryption === 'ssl' ? 'ssl://' . $host : $host;
+    $socket = @stream_socket_client(
+        $remoteHost . ':' . $port,
+        $errno,
+        $errstr,
+        $timeout,
+        STREAM_CLIENT_CONNECT
+    );
+    if (!$socket) {
+        error_log("SMTP conexión fallida: {$errstr} ({$errno}).");
+        return false;
+    }
+    stream_set_timeout($socket, $timeout);
+
+    $greeting = smtp_read_response($socket);
+    if (!smtp_expect_code($greeting, 220)) {
+        error_log('SMTP saludo inválido: ' . trim($greeting));
+        fclose($socket);
+        return false;
+    }
+
+    $hostname = gethostname() ?: 'localhost';
+    if (!smtp_command($socket, "EHLO {$hostname}", [250], 'SMTP EHLO falló')) {
+        if (!smtp_command($socket, "HELO {$hostname}", [250], 'SMTP HELO falló')) {
+            fclose($socket);
+            return false;
+        }
+    }
+
+    if ($encryption === 'tls') {
+        if (!smtp_command($socket, 'STARTTLS', [220], 'SMTP STARTTLS falló')) {
+            fclose($socket);
+            return false;
+        }
+        if (!stream_socket_enable_crypto($socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT)) {
+            error_log('SMTP no pudo negociar TLS.');
+            fclose($socket);
+            return false;
+        }
+        if (!smtp_command($socket, "EHLO {$hostname}", [250], 'SMTP EHLO (post TLS) falló')) {
+            fclose($socket);
+            return false;
+        }
+    }
+
+    if ($username !== '' || $password !== '') {
+        if ($username === '' || $password === '') {
+            error_log('SMTP autenticación requiere usuario y contraseña.');
+            fclose($socket);
+            return false;
+        }
+        if (!smtp_auth_login($socket, $username, $password)) {
+            fclose($socket);
+            return false;
+        }
+    }
+
+    if (!smtp_command($socket, "MAIL FROM:<{$fromEmail}>", [250], 'SMTP MAIL FROM falló')) {
+        fclose($socket);
+        return false;
+    }
+    if (!smtp_command($socket, "RCPT TO:<{$to}>", [250, 251], 'SMTP RCPT TO falló')) {
+        fclose($socket);
+        return false;
+    }
+    if (!smtp_command($socket, 'DATA', [354], 'SMTP DATA falló')) {
+        fclose($socket);
+        return false;
+    }
+
+    $payload = smtp_prepare_data($rawMessage);
+    smtp_write($socket, $payload . "\r\n.");
+    $dataResponse = smtp_read_response($socket);
+    if (!smtp_expect_code($dataResponse, 250)) {
+        error_log('SMTP envío falló: ' . trim($dataResponse));
+        fclose($socket);
+        return false;
+    }
+
+    smtp_command($socket, 'QUIT', [221, 250], 'SMTP QUIT falló');
+    fclose($socket);
+    return true;
+}
+
+function smtp_auth_login($socket, string $username, string $password): bool
+{
+    if (!smtp_command($socket, 'AUTH LOGIN', [334], 'SMTP AUTH LOGIN falló')) {
+        return false;
+    }
+    smtp_write($socket, base64_encode($username));
+    $userResponse = smtp_read_response($socket);
+    if (!smtp_expect_code($userResponse, 334)) {
+        error_log('SMTP AUTH usuario rechazado: ' . trim($userResponse));
+        return false;
+    }
+    smtp_write($socket, base64_encode($password));
+    $passResponse = smtp_read_response($socket);
+    if (!smtp_expect_code($passResponse, 235)) {
+        error_log('SMTP AUTH contraseña rechazada: ' . trim($passResponse));
+        return false;
+    }
+    return true;
+}
+
+function smtp_command($socket, string $command, array $expectedCodes, string $errorMessage): bool
+{
+    smtp_write($socket, $command);
+    $response = smtp_read_response($socket);
+    if (!smtp_expect_code($response, $expectedCodes)) {
+        error_log($errorMessage . ': ' . trim($response));
+        return false;
+    }
+    return true;
+}
+
+function smtp_write($socket, string $command): void
+{
+    fwrite($socket, $command . "\r\n");
+}
+
+function smtp_read_response($socket): string
+{
+    $data = '';
+    while (($line = fgets($socket, 515)) !== false) {
+        $data .= $line;
+        if (preg_match('/^\d{3} /', $line)) {
+            break;
+        }
+    }
+    return $data;
+}
+
+function smtp_expect_code(string $response, $expectedCodes): bool
+{
+    $code = (int) substr(trim($response), 0, 3);
+    $codes = is_array($expectedCodes) ? $expectedCodes : [$expectedCodes];
+    return in_array($code, $codes, true);
+}
+
+function smtp_prepare_data(string $data): string
+{
+    $normalized = str_replace(["\r\n", "\r"], "\n", $data);
+    $normalized = str_replace("\n", "\r\n", $normalized);
+    return preg_replace('/\r\n\./', "\r\n..", $normalized) ?? $normalized;
+}
+
 function send_mail(string $to, string $subject, string $message, array $data = []): bool
 {
     global $config;
-    $fromEmail = $config['mail']['from_email'];
-    $fromName = $config['mail']['from_name'];
+    $fromEmail = (string) ($config['mail']['from_email'] ?? '');
+    $fromName = (string) ($config['mail']['from_name'] ?? '');
     
     // Fetch Dynamic Settings
     $logo = setting('email_logo', setting('site_logo', app_url('assets/img/brand/dark.svg')));
@@ -133,10 +318,15 @@ function send_mail(string $to, string $subject, string $message, array $data = [
     $brandGray = '#757575';
     $bgSoft = '#E6E6E6';
 
+    if ($fromEmail === '') {
+        error_log('No se encontró "from_email" para enviar correo.');
+        return false;
+    }
+
     $headers = [
         'MIME-Version: 1.0',
         'Content-type: text/html; charset=utf-8',
-        'From: ' . $fromName . ' <' . $fromEmail . '>',
+        'From: ' . format_email_address($fromEmail, $fromName),
         'Reply-To: ' . $fromEmail,
         'X-Mailer: PHP/' . phpversion()
     ];
@@ -206,6 +396,22 @@ function send_mail(string $to, string $subject, string $message, array $data = [
         </div>
     </body>
     </html>";
+
+    $smtpConfig = (array) ($config['smtp'] ?? []);
+    $smtpEnabled = (bool) ($smtpConfig['enabled'] ?? false);
+
+    if ($smtpEnabled) {
+        $smtpHeaders = array_merge(
+            [
+                'Date: ' . date(DATE_RFC2822),
+                'To: ' . $to,
+                'Subject: ' . encode_mail_header($subject),
+            ],
+            $headers
+        );
+        $rawMessage = implode("\r\n", $smtpHeaders) . "\r\n\r\n" . $htmlMessage;
+        return smtp_send_message($smtpConfig, $fromEmail, $to, $rawMessage);
+    }
 
     return mail($to, $subject, $htmlMessage, implode("\r\n", $headers));
 }

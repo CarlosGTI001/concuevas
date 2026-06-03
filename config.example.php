@@ -19,4 +19,13 @@ return [
         'from_email' => 'noreply@example.com',
         'from_name' => 'Construcciones Cuevas',
     ],
+    'smtp' => [
+        'enabled' => false,
+        'host' => 'smtp.example.com',
+        'port' => 587,
+        'username' => 'user@example.com',
+        'password' => 'change_me',
+        'encryption' => 'tls', // tls, ssl, or none
+        'timeout' => 15,
+    ],
 ];
