@@ -1,0 +1,13 @@
+[10-May-2026 01:16:58 America/Mexico_City] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO) in /home/rusovmkx/prueba.rusosport.com/includes/db.php:23
+Stack trace:
+#0 /home/rusovmkx/prueba.rusosport.com/includes/db.php(23): PDO->__construct()
+#1 /home/rusovmkx/prueba.rusosport.com/includes/auth.php(11): db()
+#2 /home/rusovmkx/prueba.rusosport.com/admin/login.php(13): attempt_login()
+#3 {main}
+  thrown in /home/rusovmkx/prueba.rusosport.com/includes/db.php on line 23
+[10-May-2026 01:37:36 America/Mexico_City] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'rusovmkx_cuevas.users' doesn't exist in /home/rusovmkx/prueba.rusosport.com/includes/auth.php:12
+Stack trace:
+#0 /home/rusovmkx/prueba.rusosport.com/includes/auth.php(12): PDOStatement->execute()
+#1 /home/rusovmkx/prueba.rusosport.com/admin/login.php(13): attempt_login()
+#2 {main}
+  thrown in /home/rusovmkx/prueba.rusosport.com/includes/auth.php on line 12

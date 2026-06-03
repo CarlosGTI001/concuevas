@@ -1,0 +1,5 @@
+<?php
+declare(strict_types=1);
+require __DIR__ . '/../includes/bootstrap.php';
+logout();
+redirect(app_url('admin/login.php'));

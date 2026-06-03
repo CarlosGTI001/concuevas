@@ -1,0 +1,427 @@
+[10-May-2026 01:15:20 America/Mexico_City] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO) in /home/rusovmkx/prueba.rusosport.com/includes/db.php:23
+Stack trace:
+#0 /home/rusovmkx/prueba.rusosport.com/includes/db.php(23): PDO->__construct()
+#1 /home/rusovmkx/prueba.rusosport.com/includes/cms.php(10): db()
+#2 /home/rusovmkx/prueba.rusosport.com/includes/cms.php(21): setting()
+#3 /home/rusovmkx/prueba.rusosport.com/index.php(6): site_name()
+#4 {main}
+  thrown in /home/rusovmkx/prueba.rusosport.com/includes/db.php on line 23
+[10-May-2026 01:15:22 America/Mexico_City] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO) in /home/rusovmkx/prueba.rusosport.com/includes/db.php:23
+Stack trace:
+#0 /home/rusovmkx/prueba.rusosport.com/includes/db.php(23): PDO->__construct()
+#1 /home/rusovmkx/prueba.rusosport.com/includes/cms.php(10): db()
+#2 /home/rusovmkx/prueba.rusosport.com/includes/cms.php(21): setting()
+#3 /home/rusovmkx/prueba.rusosport.com/index.php(6): site_name()
+#4 {main}
+  thrown in /home/rusovmkx/prueba.rusosport.com/includes/db.php on line 23
+[10-May-2026 01:15:29 America/Mexico_City] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO) in /home/rusovmkx/prueba.rusosport.com/includes/db.php:23
+Stack trace:
+#0 /home/rusovmkx/prueba.rusosport.com/includes/db.php(23): PDO->__construct()
+#1 /home/rusovmkx/prueba.rusosport.com/includes/cms.php(10): db()
+#2 /home/rusovmkx/prueba.rusosport.com/includes/cms.php(21): setting()
+#3 /home/rusovmkx/prueba.rusosport.com/index.php(6): site_name()
+#4 {main}
+  thrown in /home/rusovmkx/prueba.rusosport.com/includes/db.php on line 23
+[10-May-2026 01:35:01 America/Mexico_City] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO) in /home/rusovmkx/prueba.rusosport.com/includes/db.php:23
+Stack trace:
+#0 /home/rusovmkx/prueba.rusosport.com/includes/db.php(23): PDO->__construct()
+#1 /home/rusovmkx/prueba.rusosport.com/includes/cms.php(10): db()
+#2 /home/rusovmkx/prueba.rusosport.com/includes/cms.php(21): setting()
+#3 /home/rusovmkx/prueba.rusosport.com/index.php(6): site_name()
+#4 {main}
+  thrown in /home/rusovmkx/prueba.rusosport.com/includes/db.php on line 23
+[10-May-2026 01:36:05 America/Mexico_City] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'rusovmkx_cuevas.site_settings' doesn't exist in /home/rusovmkx/prueba.rusosport.com/includes/cms.php:10
+Stack trace:
+#0 /home/rusovmkx/prueba.rusosport.com/includes/cms.php(10): PDO->query()
+#1 /home/rusovmkx/prueba.rusosport.com/includes/cms.php(21): setting()
+#2 /home/rusovmkx/prueba.rusosport.com/index.php(6): site_name()
+#3 {main}
+  thrown in /home/rusovmkx/prueba.rusosport.com/includes/cms.php on line 10
+[10-May-2026 01:39:41 America/Mexico_City] [2026-05-10 01:39:41] PDOException
+Mensaje: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'rusovmkx_cuevas.users' doesn't exist
+Archivo: /home/rusovmkx/prueba.rusosport.com/includes/auth.php
+Línea: 12
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/includes/auth.php(12): PDOStatement->execute()
+#1 /home/rusovmkx/prueba.rusosport.com/admin/login.php(13): attempt_login()
+#2 {main}
+[10-May-2026 01:46:44 America/Mexico_City] [2026-05-10 01:46:44] RuntimeException
+Mensaje: No se pudo inicializar la base de datos automáticamente: There is no active transaction
+Archivo: /home/rusovmkx/prueba.rusosport.com/includes/db.php
+Línea: 91
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/includes/db.php(58): run_schema_sql()
+#1 /home/rusovmkx/prueba.rusosport.com/includes/db.php(28): ensure_database_schema()
+#2 /home/rusovmkx/prueba.rusosport.com/includes/auth.php(21): db()
+#3 /home/rusovmkx/prueba.rusosport.com/admin/login.php(13): attempt_login()
+#4 {main}
+[10-May-2026 08:45:43 America/Mexico_City] [2026-05-10 08:45:43] ErrorException
+Mensaje: Undefined variable $projects
+Archivo: /home/rusovmkx/prueba.rusosport.com/index.php
+Línea: 102
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/index.php(102): {closure}()
+#1 {main}
+[10-May-2026 08:45:57 America/Mexico_City] [2026-05-10 08:45:57] ErrorException
+Mensaje: Undefined variable $projects
+Archivo: /home/rusovmkx/prueba.rusosport.com/index.php
+Línea: 102
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/index.php(102): {closure}()
+#1 {main}
+[10-May-2026 14:10:26 America/Mexico_City] [2026-05-10 14:10:26] ErrorException
+Mensaje: Undefined array key "slider_img_1"
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/settings.php
+Línea: 32
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/settings.php(32): {closure}()
+#1 {main}
+[10-May-2026 23:24:06 America/Santo_Domingo] [2026-05-10 23:24:06] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:06 America/Santo_Domingo] [2026-05-10 23:24:06] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:08 America/Santo_Domingo] [2026-05-10 23:24:08] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:08 America/Santo_Domingo] [2026-05-10 23:24:08] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:10 America/Santo_Domingo] [2026-05-10 23:24:10] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:10 America/Santo_Domingo] [2026-05-10 23:24:10] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:11 America/Santo_Domingo] [2026-05-10 23:24:11] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:12 America/Santo_Domingo] [2026-05-10 23:24:12] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:13 America/Santo_Domingo] [2026-05-10 23:24:13] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:13 America/Santo_Domingo] [2026-05-10 23:24:13] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:14 America/Santo_Domingo] [2026-05-10 23:24:14] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:14 America/Santo_Domingo] [2026-05-10 23:24:14] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:16 America/Santo_Domingo] [2026-05-10 23:24:16] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:16 America/Santo_Domingo] [2026-05-10 23:24:16] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:17 America/Santo_Domingo] [2026-05-10 23:24:17] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:17 America/Santo_Domingo] [2026-05-10 23:24:17] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:18 America/Santo_Domingo] [2026-05-10 23:24:18] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:18 America/Santo_Domingo] [2026-05-10 23:24:18] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:19 America/Santo_Domingo] [2026-05-10 23:24:19] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:20 America/Santo_Domingo] [2026-05-10 23:24:20] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:21 America/Santo_Domingo] [2026-05-10 23:24:21] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:21 America/Santo_Domingo] [2026-05-10 23:24:21] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:22 America/Santo_Domingo] [2026-05-10 23:24:22] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:22 America/Santo_Domingo] [2026-05-10 23:24:22] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:23 America/Santo_Domingo] [2026-05-10 23:24:23] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:24 America/Santo_Domingo] [2026-05-10 23:24:24] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:24 America/Santo_Domingo] [2026-05-10 23:24:24] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:25 America/Santo_Domingo] [2026-05-10 23:24:25] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:26 America/Santo_Domingo] [2026-05-10 23:24:26] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:26 America/Santo_Domingo] [2026-05-10 23:24:26] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:27 America/Santo_Domingo] [2026-05-10 23:24:27] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:27 America/Santo_Domingo] [2026-05-10 23:24:27] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:28 America/Santo_Domingo] [2026-05-10 23:24:28] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:29 America/Santo_Domingo] [2026-05-10 23:24:29] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:29 America/Santo_Domingo] [2026-05-10 23:24:29] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:30 America/Santo_Domingo] [2026-05-10 23:24:30] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:30 America/Santo_Domingo] [2026-05-10 23:24:30] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:31 America/Santo_Domingo] [2026-05-10 23:24:31] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:32 America/Santo_Domingo] [2026-05-10 23:24:32] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:32 America/Santo_Domingo] [2026-05-10 23:24:32] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:33 America/Santo_Domingo] [2026-05-10 23:24:33] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:33 America/Santo_Domingo] [2026-05-10 23:24:33] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
+[10-May-2026 23:24:34 America/Santo_Domingo] [2026-05-10 23:24:34] PDOException
+Mensaje: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'session_id' in 'INSERT INTO'
+Archivo: /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php
+Línea: 28
+
+Trace:
+#0 /home/rusovmkx/prueba.rusosport.com/admin/gallery_handler.php(28): PDO->prepare()
+#1 {main}
