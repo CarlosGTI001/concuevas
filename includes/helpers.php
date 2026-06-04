@@ -174,22 +174,34 @@ function smtp_send_message(array $smtp, string $fromEmail, string $to, string $r
     }
 
     $remoteHost = $encryption === 'ssl' ? 'ssl://' . $host : $host;
+    error_log("SMTP conectando a: $remoteHost:$port (Encryption: $encryption)");
+    
+    $context = stream_context_create([
+        'ssl' => [
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+            'allow_self_signed' => true,
+        ]
+    ]);
+
     $socket = @stream_socket_client(
         $remoteHost . ':' . $port,
         $errno,
         $errstr,
         $timeout,
-        STREAM_CLIENT_CONNECT
+        STREAM_CLIENT_CONNECT,
+        $context
     );
     if (!$socket) {
-        error_log("SMTP conexión fallida: {$errstr} ({$errno}).");
+        error_log("SMTP conexión fallida: {$errstr} ({$errno}). Host: $remoteHost:$port");
         return false;
     }
     stream_set_timeout($socket, $timeout);
 
     $greeting = smtp_read_response($socket);
     if (!smtp_expect_code($greeting, 220)) {
-        error_log('SMTP saludo inválido: ' . trim($greeting));
+        $meta = stream_get_meta_data($socket);
+        error_log('SMTP saludo inválido: "' . trim($greeting) . '" (Timed out: ' . ($meta['timed_out'] ? 'SI' : 'NO') . ')');
         fclose($socket);
         return false;
     }
