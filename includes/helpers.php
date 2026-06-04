@@ -350,10 +350,10 @@ function send_mail(string $to, string $subject, string $message, array $data = [
     $email = setting('contact_email', 'contacto@construccionescuevas.com');
     $address = setting('contact_address', 'Av. Principal 123, Zona Centro');
     
-    // Neumorphism Palette (Matches neumorphism.css)
+    // Neumorphism Palette
     $bgMain = '#e6e7ee';
     $textDark = '#44476A';
-    $textDeep = '#31344b';
+    $textDeep = '#0D284F'; // Using Brand Blue for contrast
     $shadowLight = '#ffffff';
     $shadowDark = '#b1bcce';
 
@@ -370,73 +370,115 @@ function send_mail(string $to, string $subject, string $message, array $data = [
         'X-Mailer: PHP/' . phpversion()
     ];
 
-    // Neumorphic Corporate Email Template
+    // Premium Neumorphic Email Template with Dark Mode Support
     $htmlMessage = "
     <!DOCTYPE html>
     <html lang='es'>
     <head>
         <meta charset='utf-8'>
         <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <meta name='color-scheme' content='light dark'>
+        <meta name='supported-color-schemes' content='light dark'>
         <style>
-            @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+            
+            :root {
+                color-scheme: light dark;
+                supported-color-schemes: light dark;
+            }
+
             body { 
-                font-family: 'Nunito Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+                font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
                 background-color: {$bgMain}; 
                 margin: 0; 
                 padding: 0; 
                 color: {$textDark};
             }
-            .wrapper { padding: 40px 20px; background-color: {$bgMain}; }
+            .wrapper { padding: 40px 15px; background-color: {$bgMain}; }
             .container { 
                 max-width: 600px; 
                 margin: 0 auto; 
                 background-color: {$bgMain}; 
-                border-radius: 20px; 
+                border-radius: 30px; 
                 padding: 40px;
-                box-shadow: 10px 10px 20px {$shadowDark}, -10px -10px 20px {$shadowLight}; 
+                box-shadow: 15px 15px 30px {$shadowDark}, -15px -15px 30px {$shadowLight}; 
             }
-            .header { text-align: center; margin-bottom: 40px; }
-            .logo-container {
-                display: inline-block;
-                padding: 20px 40px;
-                background-color: {$bgMain};
-                border-radius: 15px;
-                box-shadow: 6px 6px 12px {$shadowDark}, -6px -6px 12px {$shadowLight};
-            }
-            .content { color: {$textDark}; line-height: 1.6; }
-            h1 { font-size: 24px; color: {$textDeep}; margin-bottom: 25px; font-weight: 700; text-align: center; }
-            .main-text { font-size: 16px; margin-bottom: 30px; font-weight: 300; text-align: center; }
-            .card { 
+            .header { text-align: center; margin-bottom: 35px; }
+            .logo-img { max-height: 55px; }
+            h1 { font-size: 22px; color: {$textDeep}; margin-bottom: 20px; font-weight: 700; text-align: center; letter-spacing: -0.5px; }
+            .main-text { font-size: 16px; margin-bottom: 35px; font-weight: 400; line-height: 1.7; text-align: center; color: {$textDark}; }
+            
+            .details-card { 
                 background-color: {$bgMain}; 
                 padding: 30px; 
-                border-radius: 20px; 
-                box-shadow: inset 6px 6px 12px {$shadowDark}, inset -6px -6px 12px {$shadowLight}; 
-                margin: 30px 0; 
+                border-radius: 24px; 
+                box-shadow: inset 8px 8px 16px {$shadowDark}, inset -8px -8px 16px {$shadowLight}; 
+                margin: 35px 0; 
             }
-            .badge { 
-                background-color: {$bgMain}; 
+            .details-title { 
+                font-weight: 700; 
                 color: {$textDeep}; 
-                padding: 8px 18px; 
-                border-radius: 12px; 
-                display: inline-block; 
-                box-shadow: 4px 4px 8px {$shadowDark}, -4px -4px 8px {$shadowLight}; 
-                font-weight: 700;
+                font-size: 14px; 
+                text-transform: uppercase; 
+                letter-spacing: 1px; 
+                margin-bottom: 20px;
+                display: block;
+            }
+            .detail-item { margin-bottom: 15px; }
+            .detail-label { font-size: 12px; color: #757575; font-weight: 600; display: block; margin-bottom: 4px; }
+            .detail-value { font-size: 15px; color: {$textDeep}; font-weight: 600; }
+            
+            .message-box {
+                margin-top: 20px;
+                padding: 20px;
+                background-color: rgba(255,255,255,0.3);
+                border-radius: 16px;
+                font-style: italic;
                 font-size: 14px;
+                line-height: 1.6;
+                color: {$textDark};
+                border: 1px solid rgba(255,255,255,0.5);
             }
+
             .signature { 
-                margin-top: 40px; 
-                padding-top: 30px; 
-                border-top: 1px solid rgba(0,0,0,0.05); 
-                color: {$textDeep};
+                margin-top: 45px; 
                 text-align: center;
+                color: {$textDeep};
             }
+            .signature-name { font-weight: 700; font-size: 17px; margin: 0; }
+            .signature-team { font-weight: 400; font-size: 14px; margin-top: 5px; opacity: 0.8; }
+
             .footer { 
-                margin-top: 40px; 
+                margin-top: 50px; 
                 text-align: center; 
-                font-size: 13px; 
-                color: #66799e; 
+                font-size: 12px; 
+                color: #8898aa; 
+                border-top: 1px solid rgba(0,0,0,0.05);
+                padding-top: 30px;
             }
-            .footer p { margin: 5px 0; }
+            .contact-info { margin-bottom: 15px; font-weight: 500; }
+            .copyright { opacity: 0.7; font-size: 11px; }
+
+            /* Dark Mode Adjustments */
+            @media (prefers-color-scheme: dark) {
+                body, .wrapper { background-color: #1b1e2e !important; }
+                .container { 
+                    background-color: #1b1e2e !important; 
+                    box-shadow: 10px 10px 20px #0d0f17, -10px -10px 20px #292e45 !important;
+                }
+                .details-card {
+                    background-color: #1b1e2e !important;
+                    box-shadow: inset 6px 6px 12px #0d0f17, inset -6px -6px 12px #292e45 !important;
+                }
+                h1, .detail-value, .signature-name, .signature { color: #e6e7ee !important; }
+                .main-text, .detail-label, .signature-team { color: #aeb3c2 !important; }
+                .message-box {
+                    background-color: rgba(0,0,0,0.2) !important;
+                    color: #aeb3c2 !important;
+                    border-color: rgba(255,255,255,0.1) !important;
+                }
+                .logo-img { filter: brightness(0) invert(1); }
+            }
         </style>
     </head>
     <body>
@@ -444,9 +486,7 @@ function send_mail(string $to, string $subject, string $message, array $data = [
             <div class='container'>
                 <!-- Header -->
                 <div class='header'>
-                    <div class='logo-container'>
-                        <img src='{$logo}' alt='{$fromName}' style='max-height: 60px; display: block;'>
-                    </div>
+                    <img src='{$logo}' alt='{$fromName}' class='logo-img'>
                 </div>
 
                 <!-- Content -->
@@ -458,32 +498,36 @@ function send_mail(string $to, string $subject, string $message, array $data = [
                     </div>
                     
                     " . (isset($data['project_type']) ? "
-                    <div class='card'>
-                        <p style='margin-top:0; font-weight:700; color: {$textDeep}; font-size: 18px; margin-bottom: 20px;'>Resumen de tu solicitud:</p>
-                        <div style='margin-bottom: 20px;'>
-                            <span style='font-size: 14px; color: #66799e; display: block; margin-bottom: 5px;'>Tipo de proyecto:</span>
-                            <span class='badge'>{$data['project_type']}</span>
+                    <div class='details-card'>
+                        <span class='details-title'>Resumen del Proyecto</span>
+                        
+                        <div class='detail-item'>
+                            <span class='detail-label'>Tipo de Servicio</span>
+                            <span class='detail-value'>" . htmlspecialchars($data['project_type']) . "</span>
                         </div>
-                        <div style='font-size: 15px; color: {$textDark}; background-color: rgba(255,255,255,0.2); padding: 20px; border-radius: 12px; box-shadow: inset 2px 2px 5px {$shadowDark}, inset -2px -2px 5px {$shadowLight};'>
-                            <strong>Mensaje:</strong><br>
-                            <span style='font-style: italic; opacity: 0.9;'>\"" . htmlspecialchars($data['message'] ?? '') . "\"</span>
+                        
+                        <div class='message-box'>
+                            <strong>Mensaje del cliente:</strong><br>
+                            \"" . htmlspecialchars($data['message'] ?? '') . "\"
                         </div>
                     </div>" : "") . "
 
                     <!-- Signature -->
                     <div class='signature'>
-                        <p style='margin-bottom: 5px; font-weight: 300;'>Atentamente,</p>
-                        <p style='font-weight: 700; margin-top: 0; font-size: 18px;'>El equipo de {$fromName}</p>
+                        <p class='signature-name'>Atentamente,</p>
+                        <p class='signature-team'>El equipo de {$fromName}</p>
                     </div>
                 </div>
 
                 <!-- Footer -->
                 <div class='footer'>
-                    <p style='font-weight: 700; margin-bottom: 10px; color: {$textDeep};'>Construcciones Cuevas</p>
-                    <p>Tel: {$phone} | Email: {$email}</p>
-                    <p>{$address}</p>
-                    <p style='margin-top: 20px; font-size: 11px; opacity: 0.6;'>
-                        &copy; " . date('Y') . " " . htmlspecialchars($fromName) . ". Todos los derechos reservados.
+                    <div class='contact-info'>
+                        <p>{$address}</p>
+                        <p>Tel: {$phone} | Email: {$email}</p>
+                    </div>
+                    <p class='copyright'>
+                        &copy; " . date('Y') . " " . htmlspecialchars($fromName) . ". Todos los derechos reservados.<br>
+                        Este es un mensaje automático, por favor no responda directamente.
                     </p>
                 </div>
             </div>
