@@ -347,7 +347,7 @@ function send_mail(string $to, string $subject, string $message, array $data = [
     }
     
     $phone = setting('contact_phone', '+52 000 000 0000');
-    $email = setting('contact_email', 'contacto@construccionescuevas.com');
+    $email = 'cotizacion@concuevas.com';
     $address = setting('contact_address', 'Av. Principal 123, Zona Centro');
     
     // Neumorphism Palette
@@ -389,24 +389,23 @@ function send_mail(string $to, string $subject, string $message, array $data = [
 
             body { 
                 font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-                background-color: {$bgMain}; 
                 margin: 0; 
                 padding: 0; 
                 color: {$textDark};
             }
-            .wrapper { padding: 40px 15px; background-color: {$bgMain}; }
+            .wrapper { padding: 40px 15px; }
             .container { 
                 max-width: 600px; 
                 margin: 0 auto; 
                 background-color: {$bgMain}; 
-                border-radius: 30px; 
-                padding: 40px;
+                border-radius: 35px; 
+                padding: 30px 40px 50px 40px;
                 box-shadow: 15px 15px 30px {$shadowDark}, -15px -15px 30px {$shadowLight}; 
             }
-            .header { text-align: center; margin-bottom: 35px; }
-            .logo-img { max-height: 55px; }
-            h1 { font-size: 22px; color: {$textDeep}; margin-bottom: 20px; font-weight: 700; text-align: center; letter-spacing: -0.5px; }
-            .main-text { font-size: 16px; margin-bottom: 35px; font-weight: 400; line-height: 1.7; text-align: center; color: {$textDark}; }
+            .header { text-align: center; margin-bottom: 20px; }
+            .logo-img { max-height: 90px; }
+            h1 { font-size: 24px; color: {$textDeep}; margin-bottom: 15px; font-weight: 700; text-align: center; letter-spacing: -0.5px; }
+            .main-text { font-size: 16px; margin-bottom: 30px; font-weight: 400; line-height: 1.7; text-align: center; color: {$textDark}; }
             
             .details-card { 
                 background-color: {$bgMain}; 
