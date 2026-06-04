@@ -57,32 +57,75 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   <link rel="stylesheet" href="<?= e(app_url('styles.css')) ?>?v=<?= APP_VERSION ?>">
 </head>
-<body class="admin-body">
-  <main class="admin-wrap">
-    <div class="login-layout">
-      <section class="login-brand">
-        <p class="login-chip">Primer acceso</p>
-        <h1>Cambio obligatorio de credenciales</h1>
-        <p>Por seguridad debes cambiar el usuario (email) y la contraseña predeterminada antes de continuar.</p>
-      </section>
-      <section class="admin-card login-card">
-        <h2>Actualizar acceso</h2>
-        <p class="login-subtitle">Este paso solo aparece una vez para la cuenta inicial.</p>
-        <?php if ($error !== ''): ?><p class="notice error"><?= e($error) ?></p><?php endif; ?>
-        <form method="post">
-          <label for="email">Nuevo email de acceso</label>
-          <input id="email" name="email" type="email" value="<?= e((string) $currentUser['email']) ?>" required>
+<body class="bg-soft">
+  <main class="d-flex align-items-center justify-content-center min-vh-100 py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+          <div class="card bg-soft shadow-soft border-light p-4 p-lg-5">
+            <div class="text-center mb-5">
+              <div class="shadow-soft p-3 rounded-circle border border-light d-inline-block mb-4">
+                <img src="<?= e(app_url('assets/img/brand/dark.svg')) ?>" width="50" height="50" alt="Logo">
+              </div>
+              <h1 class="h3 mb-2">Primer Acceso</h1>
+              <p class="text-muted small px-lg-5">Por seguridad, debes actualizar tu email y contraseña predeterminada antes de continuar al panel.</p>
+            </div>
 
-          <label for="password">Nueva contraseña</label>
-          <input id="password" name="password" type="password" minlength="8" required>
+            <?php if ($error !== ''): ?>
+              <div class="alert alert-danger shadow-inset-soft mb-4 small text-center">
+                <span class="fas fa-exclamation-circle mr-2"></span> <?= e($error) ?>
+              </div>
+            <?php endif; ?>
 
-          <label for="password_confirm">Confirmar nueva contraseña</label>
-          <input id="password_confirm" name="password_confirm" type="password" minlength="8" required>
+            <form method="post" class="mt-4">
+              <div class="form-group mb-4">
+                <label for="email">Nuevo email de acceso</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><span class="fas fa-envelope"></span></span>
+                  </div>
+                  <input id="email" name="email" class="form-control" type="email" value="<?= e((string) $currentUser['email']) ?>" placeholder="ejemplo@correo.com" required>
+                </div>
+                <small class="form-text text-muted">Este será tu nuevo usuario para iniciar sesión.</small>
+              </div>
 
-          <button class="btn" type="submit">Guardar y continuar</button>
-        </form>
-      </section>
+              <div class="form-group mb-4">
+                <label for="password">Nueva contraseña</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><span class="fas fa-unlock-alt"></span></span>
+                  </div>
+                  <input id="password" name="password" class="form-control" type="password" placeholder="Mínimo 8 caracteres" minlength="8" required>
+                </div>
+              </div>
+
+              <div class="form-group mb-4">
+                <label for="password_confirm">Confirmar nueva contraseña</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><span class="fas fa-check-double"></span></span>
+                  </div>
+                  <input id="password_confirm" name="password_confirm" class="form-control" type="password" placeholder="Repite la contraseña" minlength="8" required>
+                </div>
+              </div>
+
+              <div class="mt-5">
+                <button class="btn btn-primary btn-block" type="submit">Actualizar y entrar al Panel</button>
+              </div>
+            </form>
+
+            <div class="mt-4 text-center">
+              <a href="<?= e(app_url('admin/logout.php')) ?>" class="small text-muted"><span class="fas fa-sign-out-alt mr-2"></span> Cancelar y cerrar sesión</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
+
+  <!-- Core Scripts -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

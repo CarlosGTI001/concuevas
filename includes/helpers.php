@@ -338,14 +338,24 @@ function send_mail(string $to, string $subject, string $message, array $data = [
     $fromName = (string) ($config['mail']['from_name'] ?? '');
     
     // Fetch Dynamic Settings
-    $logo = setting('email_logo', setting('site_logo', app_url('assets/img/brand/dark.svg')));
+    $logo = setting('email_logo', setting('site_logo'));
+    if ($logo && !preg_match('/^https?:\/\//', $logo)) {
+        $logo = app_url($logo);
+    }
+    if (!$logo) {
+        $logo = app_url('assets/img/brand/dark.svg');
+    }
+    
     $phone = setting('contact_phone', '+52 000 000 0000');
     $email = setting('contact_email', 'contacto@construccionescuevas.com');
     $address = setting('contact_address', 'Av. Principal 123, Zona Centro');
     
-    $brandBlue = '#0D284F';
-    $brandGray = '#757575';
-    $bgSoft = '#E6E6E6';
+    // Neumorphism Palette (Matches neumorphism.css)
+    $bgMain = '#e6e7ee';
+    $textDark = '#44476A';
+    $textDeep = '#31344b';
+    $shadowLight = '#ffffff';
+    $shadowDark = '#b1bcce';
 
     if ($fromEmail === '') {
         error_log('[Mail] No se encontró "from_email" en config.php');
@@ -360,67 +370,129 @@ function send_mail(string $to, string $subject, string $message, array $data = [
         'X-Mailer: PHP/' . phpversion()
     ];
 
-    // Master Corporate Email Template
+    // Neumorphic Corporate Email Template
     $htmlMessage = "
     <!DOCTYPE html>
-    <html>
+    <html lang='es'>
     <head>
         <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
         <style>
-            body { font-family: 'Montserrat', Arial, sans-serif; background-color: {$bgSoft}; margin: 0; padding: 0; }
-            .container { max-width: 600px; margin: 40px auto; background-color: {$bgSoft}; border-radius: 20px; overflow: hidden; box-shadow: 10px 10px 20px #bebebe, -10px -10px 20px #ffffff; }
-            .header { background-color: {$bgSoft}; padding: 30px; text-align: center; border-bottom: 1px solid rgba(0,0,0,0.05); }
-            .content { padding: 40px; color: {$brandBlue}; background-color: {$bgSoft}; }
-            .footer { background-color: {$bgSoft}; padding: 30px; text-align: center; font-size: 13px; color: {$brandGray}; border-top: 1px solid rgba(0,0,0,0.05); }
-            .badge { background-color: {$bgSoft}; color: {$brandBlue}; padding: 5px 15px; border-radius: 10px; display: inline-block; box-shadow: inset 2px 2px 5px #bebebe, inset -2px -2px 5px #ffffff; font-weight: bold; }
-            .card { background-color: {$bgSoft}; padding: 20px; border-radius: 15px; box-shadow: 4px 4px 8px #bebebe, -4px -4px 8px #ffffff; margin-top: 20px; }
-            .signature { margin-top: 40px; padding-top: 20px; border-top: 1px dashed #ccc; font-style: italic; }
-            h1 { font-size: 22px; margin-bottom: 20px; color: {$brandBlue}; }
-            p { line-height: 1.7; margin-bottom: 15px; }
-            .info-item { margin-bottom: 5px; }
+            @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap');
+            body { 
+                font-family: 'Nunito Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+                background-color: {$bgMain}; 
+                margin: 0; 
+                padding: 0; 
+                color: {$textDark};
+            }
+            .wrapper { padding: 40px 20px; background-color: {$bgMain}; }
+            .container { 
+                max-width: 600px; 
+                margin: 0 auto; 
+                background-color: {$bgMain}; 
+                border-radius: 20px; 
+                padding: 40px;
+                box-shadow: 10px 10px 20px {$shadowDark}, -10px -10px 20px {$shadowLight}; 
+            }
+            .header { text-align: center; margin-bottom: 40px; }
+            .logo-container {
+                display: inline-block;
+                padding: 15px 30px;
+                background-color: {$bgMain};
+                border-radius: 10px;
+                box-shadow: inset 4px 4px 8px {$shadowDark}, inset -4px -4px 8px {$shadowLight};
+            }
+            .content { color: {$textDark}; line-height: 1.6; }
+            h1 { font-size: 24px; color: {$textDeep}; margin-bottom: 25px; font-weight: 700; }
+            .main-text { font-size: 16px; margin-bottom: 30px; font-weight: 300; }
+            .card { 
+                background-color: {$bgMain}; 
+                padding: 25px; 
+                border-radius: 15px; 
+                box-shadow: 6px 6px 12px {$shadowDark}, -6px -6px 12px {$shadowLight}; 
+                margin: 30px 0; 
+            }
+            .badge { 
+                background-color: {$bgMain}; 
+                color: {$textDeep}; 
+                padding: 6px 15px; 
+                border-radius: 10px; 
+                display: inline-block; 
+                box-shadow: inset 2px 2px 5px {$shadowDark}, inset -2px -2px 5px {$shadowLight}; 
+                font-weight: 600;
+                font-size: 14px;
+                margin-left: 5px;
+            }
+            .signature { 
+                margin-top: 40px; 
+                padding-top: 30px; 
+                border-top: 1px solid rgba(0,0,0,0.05); 
+                color: {$textDeep};
+            }
+            .footer { 
+                margin-top: 40px; 
+                text-align: center; 
+                font-size: 13px; 
+                color: #66799e; 
+            }
+            .footer p { margin: 5px 0; }
+            .btn {
+                display: inline-block;
+                padding: 12px 25px;
+                background-color: {$bgMain};
+                color: {$textDeep};
+                text-decoration: none;
+                border-radius: 10px;
+                font-weight: 600;
+                box-shadow: 5px 5px 10px {$shadowDark}, -5px -5px 10px {$shadowLight};
+                transition: all 0.2s ease;
+            }
         </style>
     </head>
     <body>
-        <div class='container'>
-            <!-- Header -->
-            <div class='header'>
-                <img src='{$logo}' alt='{$fromName}' style='max-height: 70px;'>
-            </div>
-
-            <!-- Content -->
-            <div class='content'>
-                <h1>Hola" . (isset($data['name']) ? ", " . htmlspecialchars($data['name']) : "") . "!</h1>
-                
-                <div class='main-text'>
-                    " . nl2br(htmlspecialchars($message)) . "
-                </div>
-                
-                " . (isset($data['project_type']) ? "
-                <div class='card'>
-                    <p style='margin-top:0; font-weight:bold;'>Detalles de la solicitud:</p>
-                    <div class='info-item'>Tipo: <span class='badge'>{$data['project_type']}</span></div>
-                    <div class='info-item' style='font-size: 0.95em; opacity: 0.8; margin-top:10px;'>
-                        <strong>Mensaje original:</strong><br>
-                        \"" . htmlspecialchars($data['message'] ?? '') . "\"
+        <div class='wrapper'>
+            <div class='container'>
+                <!-- Header -->
+                <div class='header'>
+                    <div class='logo-container'>
+                        <img src='{$logo}' alt='{$fromName}' style='max-height: 50px; display: block;'>
                     </div>
-                </div>" : "") . "
-
-                <!-- Signature -->
-                <div class='signature'>
-                    <p style='margin-bottom: 5px;'>Atentamente,</p>
-                    <p style='font-weight: bold; margin-top: 0;'>El equipo de {$fromName}</p>
                 </div>
-            </div>
 
-            <!-- Footer -->
-            <div class='footer'>
-                <p style='font-weight: bold; margin-bottom: 10px;'>Construcciones Cuevas</p>
-                <div class='info-item'>Tel: {$phone}</div>
-                <div class='info-item'>Email: {$email}</div>
-                <div class='info-item'>Dirección: {$address}</div>
-                <p style='margin-top: 20px; font-size: 11px; opacity: 0.7;'>
-                    &copy; " . date('Y') . " Todos los derechos reservados. Este mensaje es confidencial.
-                </p>
+                <!-- Content -->
+                <div class='content'>
+                    <h1>¡Hola" . (isset($data['name']) ? ", " . htmlspecialchars($data['name']) : "") . "!</h1>
+                    
+                    <div class='main-text'>
+                        " . nl2br(htmlspecialchars($message)) . "
+                    </div>
+                    
+                    " . (isset($data['project_type']) ? "
+                    <div class='card'>
+                        <p style='margin-top:0; font-weight:700; color: {$textDeep};'>Detalles de la solicitud:</p>
+                        <p style='margin: 10px 0;'>Tipo de proyecto: <span class='badge'>{$data['project_type']}</span></p>
+                        <div style='font-size: 14px; opacity: 0.8; margin-top:15px; font-style: italic; border-left: 3px solid {$shadowDark}; padding-left: 15px;'>
+                            \"" . htmlspecialchars($data['message'] ?? '') . "\"
+                        </div>
+                    </div>" : "") . "
+
+                    <!-- Signature -->
+                    <div class='signature'>
+                        <p style='margin-bottom: 5px; font-weight: 300;'>Atentamente,</p>
+                        <p style='font-weight: 700; margin-top: 0;'>El equipo de {$fromName}</p>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class='footer'>
+                    <p style='font-weight: 700; margin-bottom: 10px;'>Construcciones Cuevas</p>
+                    <p>Tel: {$phone} | Email: {$email}</p>
+                    <p>{$address}</p>
+                    <p style='margin-top: 20px; font-size: 11px; opacity: 0.6;'>
+                        &copy; " . date('Y') . " " . htmlspecialchars($fromName) . ". Todos los derechos reservados.
+                    </p>
+                </div>
             </div>
         </div>
     </body>
