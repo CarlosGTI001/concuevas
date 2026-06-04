@@ -343,7 +343,7 @@ function send_mail(string $to, string $subject, string $message, array $data = [
         $logo = app_url($logo);
     }
     if (!$logo) {
-        $logo = app_url('assets/img/brand/dark.svg');
+        $logo = 'https://www.concuevas.com/uploads/settings/site-logo-5cfaf6.png';
     }
     
     $phone = setting('contact_phone', '+52 000 000 0000');
@@ -398,37 +398,37 @@ function send_mail(string $to, string $subject, string $message, array $data = [
             .header { text-align: center; margin-bottom: 40px; }
             .logo-container {
                 display: inline-block;
-                padding: 15px 30px;
+                padding: 20px 40px;
                 background-color: {$bgMain};
-                border-radius: 10px;
-                box-shadow: inset 4px 4px 8px {$shadowDark}, inset -4px -4px 8px {$shadowLight};
+                border-radius: 15px;
+                box-shadow: 6px 6px 12px {$shadowDark}, -6px -6px 12px {$shadowLight};
             }
             .content { color: {$textDark}; line-height: 1.6; }
-            h1 { font-size: 24px; color: {$textDeep}; margin-bottom: 25px; font-weight: 700; }
-            .main-text { font-size: 16px; margin-bottom: 30px; font-weight: 300; }
+            h1 { font-size: 24px; color: {$textDeep}; margin-bottom: 25px; font-weight: 700; text-align: center; }
+            .main-text { font-size: 16px; margin-bottom: 30px; font-weight: 300; text-align: center; }
             .card { 
                 background-color: {$bgMain}; 
-                padding: 25px; 
-                border-radius: 15px; 
-                box-shadow: 6px 6px 12px {$shadowDark}, -6px -6px 12px {$shadowLight}; 
+                padding: 30px; 
+                border-radius: 20px; 
+                box-shadow: inset 6px 6px 12px {$shadowDark}, inset -6px -6px 12px {$shadowLight}; 
                 margin: 30px 0; 
             }
             .badge { 
                 background-color: {$bgMain}; 
                 color: {$textDeep}; 
-                padding: 6px 15px; 
-                border-radius: 10px; 
+                padding: 8px 18px; 
+                border-radius: 12px; 
                 display: inline-block; 
-                box-shadow: inset 2px 2px 5px {$shadowDark}, inset -2px -2px 5px {$shadowLight}; 
-                font-weight: 600;
+                box-shadow: 4px 4px 8px {$shadowDark}, -4px -4px 8px {$shadowLight}; 
+                font-weight: 700;
                 font-size: 14px;
-                margin-left: 5px;
             }
             .signature { 
                 margin-top: 40px; 
                 padding-top: 30px; 
                 border-top: 1px solid rgba(0,0,0,0.05); 
                 color: {$textDeep};
+                text-align: center;
             }
             .footer { 
                 margin-top: 40px; 
@@ -437,17 +437,6 @@ function send_mail(string $to, string $subject, string $message, array $data = [
                 color: #66799e; 
             }
             .footer p { margin: 5px 0; }
-            .btn {
-                display: inline-block;
-                padding: 12px 25px;
-                background-color: {$bgMain};
-                color: {$textDeep};
-                text-decoration: none;
-                border-radius: 10px;
-                font-weight: 600;
-                box-shadow: 5px 5px 10px {$shadowDark}, -5px -5px 10px {$shadowLight};
-                transition: all 0.2s ease;
-            }
         </style>
     </head>
     <body>
@@ -456,7 +445,7 @@ function send_mail(string $to, string $subject, string $message, array $data = [
                 <!-- Header -->
                 <div class='header'>
                     <div class='logo-container'>
-                        <img src='{$logo}' alt='{$fromName}' style='max-height: 50px; display: block;'>
+                        <img src='{$logo}' alt='{$fromName}' style='max-height: 60px; display: block;'>
                     </div>
                 </div>
 
@@ -470,23 +459,27 @@ function send_mail(string $to, string $subject, string $message, array $data = [
                     
                     " . (isset($data['project_type']) ? "
                     <div class='card'>
-                        <p style='margin-top:0; font-weight:700; color: {$textDeep};'>Detalles de la solicitud:</p>
-                        <p style='margin: 10px 0;'>Tipo de proyecto: <span class='badge'>{$data['project_type']}</span></p>
-                        <div style='font-size: 14px; opacity: 0.8; margin-top:15px; font-style: italic; border-left: 3px solid {$shadowDark}; padding-left: 15px;'>
-                            \"" . htmlspecialchars($data['message'] ?? '') . "\"
+                        <p style='margin-top:0; font-weight:700; color: {$textDeep}; font-size: 18px; margin-bottom: 20px;'>Resumen de tu solicitud:</p>
+                        <div style='margin-bottom: 20px;'>
+                            <span style='font-size: 14px; color: #66799e; display: block; margin-bottom: 5px;'>Tipo de proyecto:</span>
+                            <span class='badge'>{$data['project_type']}</span>
+                        </div>
+                        <div style='font-size: 15px; color: {$textDark}; background-color: rgba(255,255,255,0.2); padding: 20px; border-radius: 12px; box-shadow: inset 2px 2px 5px {$shadowDark}, inset -2px -2px 5px {$shadowLight};'>
+                            <strong>Mensaje:</strong><br>
+                            <span style='font-style: italic; opacity: 0.9;'>\"" . htmlspecialchars($data['message'] ?? '') . "\"</span>
                         </div>
                     </div>" : "") . "
 
                     <!-- Signature -->
                     <div class='signature'>
                         <p style='margin-bottom: 5px; font-weight: 300;'>Atentamente,</p>
-                        <p style='font-weight: 700; margin-top: 0;'>El equipo de {$fromName}</p>
+                        <p style='font-weight: 700; margin-top: 0; font-size: 18px;'>El equipo de {$fromName}</p>
                     </div>
                 </div>
 
                 <!-- Footer -->
                 <div class='footer'>
-                    <p style='font-weight: 700; margin-bottom: 10px;'>Construcciones Cuevas</p>
+                    <p style='font-weight: 700; margin-bottom: 10px; color: {$textDeep};'>Construcciones Cuevas</p>
                     <p>Tel: {$phone} | Email: {$email}</p>
                     <p>{$address}</p>
                     <p style='margin-top: 20px; font-size: 11px; opacity: 0.6;'>

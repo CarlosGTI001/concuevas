@@ -61,61 +61,69 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <main class="d-flex align-items-center justify-content-center min-vh-100 py-5">
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-12 col-md-8 col-lg-6">
+        <div class="col-12 col-md-10 col-lg-7">
           <div class="card bg-soft shadow-soft border-light p-4 p-lg-5">
-            <div class="text-center mb-5">
-              <div class="shadow-soft p-3 rounded-circle border border-light d-inline-block mb-4">
-                <img src="<?= e(app_url('assets/img/brand/dark.svg')) ?>" width="50" height="50" alt="Logo">
-              </div>
-              <h1 class="h3 mb-2">Primer Acceso</h1>
-              <p class="text-muted small px-lg-5">Por seguridad, debes actualizar tu email y contraseña predeterminada antes de continuar al panel.</p>
-            </div>
-
-            <?php if ($error !== ''): ?>
-              <div class="alert alert-danger shadow-inset-soft mb-4 small text-center">
-                <span class="fas fa-exclamation-circle mr-2"></span> <?= e($error) ?>
-              </div>
-            <?php endif; ?>
-
-            <form method="post" class="mt-4">
-              <div class="form-group mb-4">
-                <label for="email">Nuevo email de acceso</label>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><span class="fas fa-envelope"></span></span>
-                  </div>
-                  <input id="email" name="email" class="form-control" type="email" value="<?= e((string) $currentUser['email']) ?>" placeholder="ejemplo@correo.com" required>
+            <div class="row align-items-center">
+              <div class="col-12 col-md-5 text-center mb-4 mb-md-0">
+                <div class="shadow-inset-soft p-4 rounded-circle border border-light d-inline-block mb-3">
+                  <img src="https://www.concuevas.com/uploads/settings/site-logo-5cfaf6.png" width="100" height="100" alt="Logo" style="object-fit: contain;">
                 </div>
-                <small class="form-text text-muted">Este será tu nuevo usuario para iniciar sesión.</small>
+                <h1 class="h4 mb-2">CMS Cuevas</h1>
+                <p class="text-muted small">Seguridad del Panel</p>
               </div>
+              <div class="col-12 col-md-7 border-left-lg border-light pl-lg-5">
+                <div class="mb-4">
+                  <span class="badge badge-primary mb-2">Cambio Obligatorio</span>
+                  <h2 class="h5">Actualizar Acceso</h2>
+                  <p class="text-muted small">Por seguridad, actualiza tus credenciales predeterminadas antes de continuar.</p>
+                </div>
 
-              <div class="form-group mb-4">
-                <label for="password">Nueva contraseña</label>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><span class="fas fa-unlock-alt"></span></span>
+                <?php if ($error !== ''): ?>
+                  <div class="alert alert-danger shadow-inset-soft mb-4 small">
+                    <span class="fas fa-exclamation-circle mr-2"></span> <?= e($error) ?>
                   </div>
-                  <input id="password" name="password" class="form-control" type="password" placeholder="Mínimo 8 caracteres" minlength="8" required>
+                <?php endif; ?>
+
+                <form method="post">
+                  <div class="form-group mb-4">
+                    <label for="email" class="small font-weight-bold">Nuevo Email</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text shadow-inset-soft"><span class="fas fa-envelope"></span></span>
+                      </div>
+                      <input id="email" name="email" class="form-control shadow-inset-soft border-0" type="email" value="<?= e((string) $currentUser['email']) ?>" required>
+                    </div>
+                  </div>
+
+                  <div class="form-group mb-4">
+                    <label for="password" class="small font-weight-bold">Nueva Contraseña</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text shadow-inset-soft"><span class="fas fa-unlock-alt"></span></span>
+                      </div>
+                      <input id="password" name="password" class="form-control shadow-inset-soft border-0" type="password" placeholder="Mínimo 8 caracteres" minlength="8" required>
+                    </div>
+                  </div>
+
+                  <div class="form-group mb-4">
+                    <label for="password_confirm" class="small font-weight-bold">Confirmar Contraseña</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text shadow-inset-soft"><span class="fas fa-check-double"></span></span>
+                      </div>
+                      <input id="password_confirm" name="password_confirm" class="form-control shadow-inset-soft border-0" type="password" placeholder="Repite la contraseña" minlength="8" required>
+                    </div>
+                  </div>
+
+                  <div class="mt-5">
+                    <button class="btn btn-primary btn-block shadow-soft border-0" type="submit">Guardar y Entrar al Panel</button>
+                  </div>
+                </form>
+                
+                <div class="mt-4 text-center">
+                  <a href="<?= e(app_url('admin/logout.php')) ?>" class="small text-muted"><span class="fas fa-sign-out-alt mr-2"></span> Cerrar sesión</a>
                 </div>
               </div>
-
-              <div class="form-group mb-4">
-                <label for="password_confirm">Confirmar nueva contraseña</label>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><span class="fas fa-check-double"></span></span>
-                  </div>
-                  <input id="password_confirm" name="password_confirm" class="form-control" type="password" placeholder="Repite la contraseña" minlength="8" required>
-                </div>
-              </div>
-
-              <div class="mt-5">
-                <button class="btn btn-primary btn-block" type="submit">Actualizar y entrar al Panel</button>
-              </div>
-            </form>
-
-            <div class="mt-4 text-center">
-              <a href="<?= e(app_url('admin/logout.php')) ?>" class="small text-muted"><span class="fas fa-sign-out-alt mr-2"></span> Cancelar y cerrar sesión</a>
             </div>
           </div>
         </div>
